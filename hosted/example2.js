@@ -1,51 +1,26 @@
-'use strict';
+"use strict";
 
-var initialHello = function initialHello() {
-  return {
-    username: 'Cody'
-  };
+var handleNameChange = function handleNameChange(e) {
+  ReactDOM.render( /*#__PURE__*/React.createElement(HelloUser, {
+    username: e.target.value
+  }), document.getElementById('app'));
 };
 
-//requires this keyword
-function renderHello() {
+var HelloUser = function HelloUser(props) {
   //onChange is a custom react listener for element.onchange. 
   //We can embed it in elements, but it doesn't get rendered into the HTML
-  //Instead it gets interpreted by JSX and adds a listener
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'p',
-      null,
-      'Hello ',
-      this.state.username,
-      ' '
-    ),
-    React.createElement(
-      'p',
-      null,
-      'Change Name:'
-    ),
-    React.createElement('input', { type: 'text', value: this.state.username, onChange: this.handleChange })
-  );
+  //Instead it gets interpreted by JSX and adds a listener 
+  return /*#__PURE__*/React.createElement("div", null, "Hello ", props.username, /*#__PURE__*/React.createElement("p", null, "Change Name:"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: props.username,
+    onChange: handleNameChange
+  }));
 };
 
-function handleNameChange(e) {
-  this.setState({
-    username: e.target.value
-  });
-}
-
-var HelloUser = React.createClass({
-  displayName: 'HelloUser',
-
-  getInitialState: initialHello,
-  handleChange: handleNameChange,
-  render: renderHello
-});
-
 var init = function init() {
-  ReactDOM.render(React.createElement(HelloUser, null), document.getElementById('app'));
+  ReactDOM.render( /*#__PURE__*/React.createElement(HelloUser, {
+    username: "Cody"
+  }), document.getElementById('app'));
 };
 
 window.onload = init;

@@ -1,38 +1,21 @@
-'use strict';
+"use strict";
 
-var initialContainerState = function initialContainerState() {
-  return {
-    songs: []
-  };
+var songState = {
+  songs: []
 };
 
-var renderSongContainer = function renderSongContainer() {
-  if (this.state.songs.length === 0) {
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(
-        'h3',
-        null,
-        'No Songs Yet!'
-      )
-    );
+var SongContainer = function SongContainer(props) {
+  if (props.songs.length === 0) {
+    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, "No Songs Yet!"));
   }
 
-  var songList = this.state.songs.map(function (song) {
-    return React.createElement(Song, { artist: song.artist, songTitle: song.title });
+  var songList = props.songs.map(function (song) {
+    return /*#__PURE__*/React.createElement(Song, {
+      artist: song.artist,
+      songTitle: song.title
+    });
   });
-
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'h1',
-      null,
-      ' My favoritest songs ever!!@! '
-    ),
-    songList
-  );
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, " My favoritest songs ever!!@! "), songList);
 };
 
 var loadSongsFromServer = function loadSongsFromServer() {
@@ -40,68 +23,31 @@ var loadSongsFromServer = function loadSongsFromServer() {
 
   var setSongs = function setSongs() {
     var songResponse = JSON.parse(xhr.response);
-
-    this.setState({
-      songs: songResponse
-    });
+    songState.songs = songResponse;
+    ReactDOM.render( /*#__PURE__*/React.createElement(SongContainer, {
+      songs: songState.songs
+    }), document.getElementById('app'));
   };
 
-  xhr.onload = setSongs.bind(this);
-
+  xhr.onload = setSongs;
   xhr.open('GET', '/getSongs');
-
   xhr.send();
 };
 
-var defaultSongProps = function defaultSongProps() {
-  return {
-    artist: '',
-    title: ''
-  };
+var Song = function Song(props) {
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", null, props.artist, " ", /*#__PURE__*/React.createElement("i", null, props.songTitle)));
 };
 
-var renderSong = function renderSong() {
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'h2',
-      null,
-      this.props.artist,
-      ' ',
-      React.createElement(
-        'i',
-        null,
-        this.props.songTitle
-      )
-    )
-  );
+Song.propTypes = {
+  artist: PropTypes.string.isRequired,
+  songTitle: PropTypes.string.isRequired
 };
-
-var Song = React.createClass({
-  displayName: 'Song',
-
-  getDefaultProps: defaultSongProps,
-  render: renderSong,
-  propTypes: {
-    artist: React.PropTypes.string.isRequired,
-    songTitle: React.PropTypes.string.isRequired
-  }
-});
-
-var SongContainer = React.createClass({
-  displayName: 'SongContainer',
-
-  loadSongs: loadSongsFromServer,
-  getInitialState: initialContainerState,
-  render: renderSongContainer,
-  componentDidMount: function componentDidMount() {
-    this.loadSongs();
-  }
-});
 
 var init = function init() {
-  ReactDOM.render(React.createElement(SongContainer, null), document.getElementById('app'));
+  ReactDOM.render( /*#__PURE__*/React.createElement(SongContainer, {
+    songs: []
+  }), document.getElementById('app'));
+  loadSongsFromServer();
 };
 
 window.onload = init;

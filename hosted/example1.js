@@ -1,25 +1,11 @@
-'use strict';
+"use strict";
 
-var renderHello = function renderHello() {
-  return React.createElement(
-    'div',
-    null,
-    React.createElement(
-      'h1',
-      null,
-      'Hello World!'
-    )
-  );
+var HelloWorld = function HelloWorld() {
+  return /*#__PURE__*/React.createElement("div", null, "Hello World!");
 };
 
-var HelloWorld = React.createClass({
-  displayName: 'HelloWorld',
-
-  render: renderHello
-});
-
 var init = function init() {
-  ReactDOM.render(React.createElement(HelloWorld, null), document.getElementById('app'));
+  ReactDOM.render( /*#__PURE__*/React.createElement(HelloWorld, null), document.getElementById('app'));
 };
 
 window.onload = init;
